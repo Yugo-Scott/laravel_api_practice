@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Event;
+use App\Http\Resources\EventResource;
 
 class EventController extends Controller
 {
@@ -13,7 +14,7 @@ class EventController extends Controller
      */
     public function index()
     {
-        return Event::all();
+        return EventResource::collection(Event:: with('user')->get()->paginate());
     }
 
     /**
@@ -29,7 +30,7 @@ class EventController extends Controller
         ]);
         $event = Event::
         create(array_merge(['user_id' => 1], $request->all()));
-        return $event;
+        return new EventResource($event);
     }
 
     /**
@@ -37,8 +38,8 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        // $event->load('attendees');
-        return $event;
+        $event->load('user', 'attendees');
+        return new EventResource($event);
     }
 
     /**
@@ -53,7 +54,7 @@ class EventController extends Controller
             'end_time' => 'sometimes|date|after:start_time',
         ]);
         $event->update($request->all());
-        return $event;
+        return new EventResource($event);
     }
 
     /**

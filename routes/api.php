@@ -29,7 +29,5 @@ Route::apiResource(
 Route::apiResource(
     'events.attendees',
     AttendeeController::class
-)->scoped([
-    'attendee' => 'event'
-])
+)->scoped()->except(['update'])
 ;
