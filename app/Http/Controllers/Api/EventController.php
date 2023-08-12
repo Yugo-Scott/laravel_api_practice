@@ -12,6 +12,12 @@ class EventController extends Controller
 {
     use CanLoadRelationships;
     private array $relationships = ['user', 'attendees', 'attendees.user'];
+
+    public function __construct()
+    {
+        $this->middleware(['auth:sanctum'])->only(['store', 'update', 'destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -54,7 +60,9 @@ class EventController extends Controller
             'end_time' => 'required|date|after:start_time',
         ]);
         $event = Event::
-        create(array_merge(['user_id' => 1], $request->all()));
+        create(array_merge([
+            'user_id' => $request->user()->id
+        ], $request->all()));
     return new EventResource($this->loadRelationships($event));
     }
 
