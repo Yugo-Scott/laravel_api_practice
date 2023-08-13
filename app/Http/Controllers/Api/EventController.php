@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Event;
 use App\Http\Resources\EventResource;
 use App\Http\Traits\CanLoadRelationships;
+// use Illuminate\Contracts\Auth\Access\Gate as GateContract; 
 
 class EventController extends Controller
 {
@@ -80,6 +81,10 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $event)
     {
+        // if ($gate->denies('update-event', $event)) {
+        //     abort(403, 'You cannot edit this event');
+        // }
+        $this->authorize('update-event', $event);
         $request->validate([
             'name' => 'sometimes|string|max:255',
             'description' => 'nullable|string',
