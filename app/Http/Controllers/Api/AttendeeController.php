@@ -18,6 +18,7 @@ class AttendeeController extends Controller
     public function __construct()
     {
         $this->middleware(['auth:sanctum'])->only(['store', 'update', 'destroy']);
+        $this->authorizeResource(Attendee::class, 'attendee');
     }
     /**
      * Display a listing of the resource.
@@ -62,7 +63,7 @@ public function store(Request $request, Event $event)
      */
     public function destroy(Event $event, Attendee $attendee)
     {
-        $this->authorize('delete-event',[ $event, $attendee]);
+        // $this->authorize('delete-event',[ $event, $attendee]);
         $attendee->delete();
 
         return response(status: 204);

@@ -17,6 +17,7 @@ class EventController extends Controller
     public function __construct()
     {
         $this->middleware(['auth:sanctum'])->only(['store', 'update', 'destroy']);
+        $this->authorizeResource(Event::class, 'event');
     }
 
     /**
@@ -84,7 +85,7 @@ class EventController extends Controller
         // if ($gate->denies('update-event', $event)) {
         //     abort(403, 'You cannot edit this event');
         // }
-        $this->authorize('update-event', $event);
+        // $this->authorize('update-event', $event);
         $request->validate([
             'name' => 'sometimes|string|max:255',
             'description' => 'nullable|string',
