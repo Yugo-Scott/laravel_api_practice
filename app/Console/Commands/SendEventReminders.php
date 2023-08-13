@@ -35,11 +35,11 @@ class SendEventReminders extends Command
         $eventCount = $events->count();
         $eventLabel = Str::plural('event', $eventCount);
         $this->info("Sending event reminders for {$eventCount} {$eventLabel}...");
-
         $events->each(fn($event)=> $event->attendees->each(fn($attendee) 
-        => 
-        // $this->info("Sending reminder to {$attendee->user->name} for {$event->name}")
-    $attendee->user->notify(new EventReminderNotification($event))));
+        =>  $this->info("Sending reminder to {$attendee->user->name} for {$event->name}")));
+        
+        $events->each(fn($event)=> $event->attendees->each(fn($attendee) 
+        => $attendee->user->notify(new EventReminderNotification($event))));
         // $this->info('Sending event reminders...');
     }
 }

@@ -40,7 +40,7 @@ class EventReminderNotification extends Notification
         return (new MailMessage)
                     ->line('Reminder: You have an event coming up!')
                     ->action('Notification Action', route('events.show', $this->event->id))
-                    ->line('Thank you for using our application!{$this->event->name} starts at {$this->event->start_time}');
+                    ->line("The event {$this->event->name} starts at {$this->event->start_time}");
     }
 
     /**
